@@ -11,9 +11,9 @@ public interface IMenuService extends IBaseService<Menu>{
 	
 }
 
-int getTotal(Dep dep);
-
-List<Dep> findAllDeps(Dep dep);
-
-Dep findById(int uuid);
+	int getTotal(Dep dep);
+	
+	List<Dep> findAllDeps(Dep dep);
+	
+	Dep findById(int uuid);
 }

@@ -84,5 +84,6 @@
 		<module>erp-dao</module>
 		<module>erp-business</module>
 		<module>erp-web1</module>
+		<module>erp-web</module>
 	</modules>
 </project>

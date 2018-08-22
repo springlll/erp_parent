@@ -14,7 +14,7 @@ import com.entor.entity.Menu;
 
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends BaseController{
+public class MenuController extends SysController{
 	@Autowired
 	private IMenuService menuService;
 	@RequestMapping(path="/getData.do")

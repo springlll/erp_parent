@@ -17,7 +17,7 @@ import com.github.pagehelper.PageHelper;
 @Controller
 @RequestMapping("/dep")
 
-public class DepController extends BaseController {
+public class DepController extends SysController {
 	@Autowired
 	private IDepBus depBus;
 
@@ -57,11 +57,11 @@ public class DepController extends BaseController {
 		public Map add(Dep dep) {
 	try {
 		depBus.add(dep);
-		return ajaxRetrun(true, "添加成功");
+		return ajaxReturn(true, "添加成功");
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	return ajaxRetrun(false, "添加失败");
+	return ajaxReturn(false, "添加失败");
 }
 
 @RequestMapping(path="/del.do",produces="application/json;charset=utf-8")
@@ -69,11 +69,11 @@ public class DepController extends BaseController {
 	public Map delDep(Dep dep) {
 	try {
 		depBus.delete(dep);
-		return ajaxRetrun(true,"删除成功");
+		return ajaxReturn(true,"删除成功");
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	return ajaxRetrun(false, "失败");
+	return ajaxReturn(false, "失败");
 }
 
 @RequestMapping(path="/get.do",produces="application/json;charset=utf-8")
@@ -88,11 +88,11 @@ public class DepController extends BaseController {
 	public Map updateDep(Dep dep) {
 	try {
 		depBus.update(dep);
-		return ajaxRetrun(true, "修改成功");
+		return ajaxReturn(true, "修改成功");
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	return ajaxRetrun(false, "失败");
+	return ajaxReturn(false, "失败");
 }
 }
 
