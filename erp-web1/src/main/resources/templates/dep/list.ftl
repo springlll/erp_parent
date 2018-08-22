@@ -130,23 +130,27 @@
 </script>
 </head>
 <body>
-<!-- 定义搜索的表单（异步提交表单） -->
-<form id="searchForm" method="post">
-	部门名称：<input name="name"/>
-	部门电话：<input name="tele"/>
-	<input type="button" value="搜索" onclick="search()"/>	
-</form>
-<table id="grid"></table>
-<div id="editForm">
-	<input type="hidden" name="uuid"/>
-	<table style="margin:10px;">
-	<tr>
-		<td>部门名称：</td><td><input name="name"class="
-		easyui-validatebox"data-options="prompt:'请输入部门名称', required:true"/>
-		
-	</tr>
-		<tr>
-			<td>部门电话：</td><td><input name="tele"/></td>
-		</tr>	
+	<!-- 构造查询表单 -->	
+	<form id="searchForm">
+		部门名称：<input name="name"/>
+		部门电话：<input name="tele"/>
+		<input type="button" value="搜索" onclick="search()"/>	
+	</form><br/>
+	<table id="grid"></table>
+	<!-- 添加或修改部门的对话框 -->
+	<div id="editWindow">
+		<form id="editForm">
+			<input type="hidden" name="uuid"/>
+			<table style="margin:10px;">
+				<tr>
+					<td>部门名称：</td><td><input name="name" class="easyui-validatebox" 
+						data-options="prompt:'请输入部门名称', required:true"/></td>
+				</tr>
+				<tr>
+					<td>部门电话：</td><td><input name="tele"/></td>
+				</tr>
+			</table>
+		</form>
+	</div>
 </body>
 </html>

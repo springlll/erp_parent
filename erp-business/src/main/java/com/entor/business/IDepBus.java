@@ -3,14 +3,17 @@ package com.entor.business;
 import java.util.List;
 
 import com.entor.entity.Dep;
+import com.entor.entity.Menu;
 
-public interface IDepBus {
+public interface IDepBus extends IBaseService<Dep>{
 
-	List<Dep> findDeps(Dep dep);
-
-	List<Dep> findAllDeps(Dep dep);
-	int getTotal(Dep dep);
+public interface IMenuService extends IBaseService<Menu>{
 	
-	void addDep(Dep dep);
+}
 
+int getTotal(Dep dep);
+
+List<Dep> findAllDeps(Dep dep);
+
+Dep findById(int uuid);
 }

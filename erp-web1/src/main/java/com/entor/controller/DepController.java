@@ -22,9 +22,9 @@ public class DepController extends BaseController {
 	private IDepBus depBus;
 
 	@RequestMapping(path="/list.do")
-	public List<Dep> list(Dep dep)  {
+	public  void list()  {
 		System.out.println("dep"+depBus);
-		return depBus.findDeps(dep);
+
 	}
 
 	@RequestMapping(path="/getData.do", produces="application/json;charset=utf-8")
@@ -38,7 +38,7 @@ public class DepController extends BaseController {
 		if(rows==null) {
 			rows=1;
 		}
-		List<Dep> depList = depBus.findDeps(dep);
+		List<Dep> depList = depBus.findAllDeps(dep);
 		int total = depBus.getTotal(dep);
 		Map map = new HashMap();
 		map.put("rows", depList);
@@ -56,12 +56,43 @@ public class DepController extends BaseController {
 @ResponseBody
 		public Map add(Dep dep) {
 	try {
-		depBus.addDep(dep);
+		depBus.add(dep);
 		return ajaxRetrun(true, "添加成功");
 	} catch (Exception e) {
 		e.printStackTrace();
 	}
-	return ajaxRetrun(true, "添加失败");
+	return ajaxRetrun(false, "添加失败");
+}
+
+@RequestMapping(path="/del.do",produces="application/json;charset=utf-8")
+	@ResponseBody
+	public Map delDep(Dep dep) {
+	try {
+		depBus.delete(dep);
+		return ajaxRetrun(true,"删除成功");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return ajaxRetrun(false, "失败");
+}
+
+@RequestMapping(path="/get.do",produces="application/json;charset=utf-8")
+	@ResponseBody
+	public Dep get(int uuid) {
+	System.out.println("uuid"+uuid);
+	return depBus.findById(uuid);
+	
+}
+@RequestMapping(path="/update.do",produces="application/json;charset=utf-8")
+	@ResponseBody
+	public Map updateDep(Dep dep) {
+	try {
+		depBus.update(dep);
+		return ajaxRetrun(true, "修改成功");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+	return ajaxRetrun(false, "失败");
 }
 }
 

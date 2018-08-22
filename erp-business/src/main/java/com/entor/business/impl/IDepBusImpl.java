@@ -5,25 +5,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.entor.business.IDepBus;
 import com.entor.entity.Dep;
 import com.entor.mapper.DepMapper;
 
+import tk.mybatis.mapper.common.Mapper;
 import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
-public class IDepBusImpl implements IDepBus{
+@Transactional(readOnly=true)
+public class IDepBusImpl extends BaseServiceImpl<Dep> implements IDepBus{
 
 	@Autowired
 	private DepMapper mapper ;
 
-	@Override
-	public List<Dep> findDeps(Dep dep) {
-		return mapper.select(dep);
-	}
+
 	@Override
 	public List<Dep> findAllDeps(Dep dep) {
 		//构造查询条件
@@ -54,9 +54,17 @@ public class IDepBusImpl implements IDepBus{
 	
 
 	}
+
 	@Override
-	public void addDep(Dep dep) {
-		mapper.insert(dep);
+	public void update(Dep dep) {		
+		mapper.updateByPrimaryKeySelective(dep);		
 	}
+	@Override
+	public Mapper<Dep> getMapper() {
+		// TODO Auto-generated method stub
+		return this.mapper;
+	}
+
+
 	
 }
