@@ -13,6 +13,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 <!-- 定义全局属性 -->
+<!-- 定义全局属性 -->
 	<properties>
 		<!-- 定义更改JDK版本属性 -->
 		<java.version>1.8</java.version>

@@ -12,6 +12,7 @@
 <script type="text/javascript" src="${request.contextPath}/js/date.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/datagrid-detailview.js"></script>
 
+
 <script type="text/javascript">
 	var stats =  new Array();
 	stats[0] = '未审核';
@@ -97,6 +98,7 @@
 });
 	
 </script>
+<script></script>
 </head>
 <body>
 	<table id="grid"></table>
