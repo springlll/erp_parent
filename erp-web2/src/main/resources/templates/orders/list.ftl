@@ -10,6 +10,8 @@
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/date.js"></script>
+<script type="text/javascript" src="${request.contextPath}/easyui/datagrid-detailview.js"></script>
+
 <script type="text/javascript">
 	var stats =  new Array();
 	stats[0] = '未审核';
@@ -27,15 +29,65 @@
 			{field: 'checktime', title: '检查日期', width: 80},
 			{field: 'starttime', title: '开始日期', width: 80},
 			{field: 'endtime', title: '结束日期', width: 80},
-			{field: 'type', title: '订单类型', width: 80},
-			{field: 'creater', title: '下单员', width: 80},
-			{field: 'checker', title: '审查员', width: 80},
-			{field: 'starter', title: '采购员', width: 80},
-			{field: 'ender', title: '库管员', width: 80},
-			{field: 'supplieruuid', title: '供应商', width: 80},
+			{field: 'type', title: '订单类型', width: 80, formatter: function(value)
+			{return value==1 ? '采购订单':(value==2?'小时订单':'未下单');}
+			},
+				{field: 'creater', title: '下单员', width: 80, formatter: function(value, row, rowIndex) {
+					if (value != null) {
+						$.post('${request.contextPath}/emp/getName.do', {uuid: value}, function(rt) {
+							$("#creater_" + rowIndex).html(rt.name);
+						}, 'json');
+					}
+					return "<span id='creater_" + rowIndex + "'></span>";
+					
+				}},
+			{field: 'checker', title: '审查员', width: 80,formatter: function(value, row, rowIndex) {
+					if (value != null) {
+						$.post('${request.contextPath}/emp/getName.do', {uuid: value}, function(rt) {
+							$("#checker_" + rowIndex).html(rt.name);
+						}, 'json');
+					}
+					return "<span id='checker_" + rowIndex + "'></span>";
+					
+				}},
+			{field: 'starter', title: '采购员', width: 80,formatter: function(value, row, rowIndex) {
+					if (value != null) {
+						$.post('${request.contextPath}/emp/getName.do', {uuid: value}, function(rt) {
+							$("#starter_" + rowIndex).html(rt.name);
+						}, 'json');
+					}
+					return "<span id='starter_" + rowIndex + "'></span>";
+					
+				}},
+			{field: 'ender', title: '库管员', width: 80,
+			formatter: function(value, row, rowIndex) {
+					if (value != null) {
+						$.post('${request.contextPath}/emp/getName.do', {uuid: value}, 
+						function(rt) {
+							$("#ender_" + rowIndex).html(rt.name);
+						}, 'json');
+					}
+					return "<span id='ender_" + rowIndex + "'></span>";
+					
+				}},
+			
+			{field: 'supplieruuid', title: '供应商', width: 80,
+			formatter: function(value, row, rowIndex) {
+					if (value != 1) {
+						$.post('${request.contextPath}/emp/getName.do', {uuid: value}, 
+						function(rt) {
+							$("#supplieruuid_" + rowIndex).html(rt.name);
+						}, 'json');
+					}
+					return "<span id='ender_" + rowIndex + "'></span>";
+					
+				}			
+			},
 			{field: 'totalMoney', title: '总金额', width: 80},
-			{field: 'state', title: '订单状态'}
-		]],
+			{field: 'state', title: '订单状态', formatter: function(value) {
+					return stats[value];
+				}}
+			]],
 		singleSelect: true,
 		pagination: true, //显示分页栏
 		pageSize: '5', //每页的记录数

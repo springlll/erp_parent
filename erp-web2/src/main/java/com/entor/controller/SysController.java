@@ -23,6 +23,7 @@ public class SysController extends BaseController {
 	@ResponseBody
 	public Map login(HttpSession session, Emp emp) {
 		List<Emp> emps = empService.find(emp);
+		System.out.println(emps);
 		if (emps.size() > 0) {
 			session.setAttribute("emp", emps.get(0)); //把当前登录用户保存在Session中
 			return ajaxReturn(true, "登录成功");
