@@ -10,7 +10,7 @@ import com.entor.mapper.EmpMapper;
 import tk.mybatis.mapper.common.Mapper;
 
 @Service
-public class EmpServiceImpl extends BaseServiceImpl<Emp> implements IEmpService{
+public  class EmpServiceImpl extends BaseServiceImpl<Emp> implements IEmpService{
 	 @Autowired
 	 private EmpMapper mapper;
 	 

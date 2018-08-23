@@ -14,7 +14,10 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 		// TODO Auto-generated method stub
 		return getMapper().selectAll();
 	}
-
+	@Override
+	public int count(T entity) {
+		return getMapper().selectCount(entity);
+	}
 	@Override
 	public List<T> find(T entity) {
 		// TODO Auto-generated method stub

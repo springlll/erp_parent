@@ -8,8 +8,6 @@ import javax.persistence.SequenceGenerator;
 import lombok.Data;
 
 @Data
-
-
 public class Dep {
 	@Id
 @GeneratedValue(strategy=GenerationType.SEQUENCE, generator="dep_seq")

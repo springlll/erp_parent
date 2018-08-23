@@ -6,8 +6,4 @@ import com.entor.entity.Orders;
 
 public interface IOrdersService extends IBaseService<Orders>{
 
-	List<Orders> findAll();
-
-	int count(Object object);
-
 }

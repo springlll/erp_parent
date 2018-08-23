@@ -1,5 +1,6 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
+
 <head id="Head1">
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>蓝云ERP管理系统</title>
@@ -9,6 +10,19 @@
     <script type="text/javascript" src="/adminjs/jquery-1.7.2.min.js"></script>
     <script type="text/javascript" src="/adminjs/jquery.easyui.1.2.6.min.js"></script>
 	<script type="text/javascript" src='/adminjs/index.js'> </script>
+	<script>
+		$(function() {
+			$.post('sys/getName.do', function(rt) {
+				if (rt.status) {
+					var name = rt.message;
+					$("#name").html(name);
+				} else {
+					alert(rt.message);
+					location = 'login.html';
+				}
+			});
+		});
+	</script>
 </head>
 <body class="easyui-layout" style="overflow-y: hidden"  fit="true"   scroll="no">
 <noscript>
@@ -24,7 +38,7 @@
     <div region="north" split="true" border="false" style="overflow: hidden; height: 30px;
         background: url(images/layout-browser-hd-bg.gif) #7f99be repeat-x center 50%;
         line-height: 20px;color: #fff; font-family: Verdana, 微软雅黑,黑体">
-        <span style="float:right; padding-right:20px;" class="head">欢迎   <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a></span>
+        <span style="float:right; padding-right:20px;" class="head">欢迎 <span id="name">ldq</span>  <a href="#" id="editpass">修改密码</a> <a href="#" id="loginOut">安全退出</a></span>
         <span style="padding-left:10px; font-size: 16px; "><img src="images/blocks.gif" width="20" height="20" align="absmiddle" /> 蓝云ERP管理系统</span>
     </div>
     <div region="south" split="true" style="height: 30px; background: #D2E0F2; ">

@@ -18,7 +18,7 @@ import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
 @Transactional(readOnly=true)
-public class IDepBusImpl extends BaseServiceImpl<Dep> implements IDepBus{
+public  class IDepBusImpl extends BaseServiceImpl<Dep> implements IDepBus{
 
 	@Autowired
 	private DepMapper mapper ;

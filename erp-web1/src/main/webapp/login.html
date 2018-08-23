@@ -12,7 +12,8 @@
 		var data = getFormData("loginform");
 		$.post('sys/login.do', data, function(rt) {
 			if (rt.status) {
-				location = 'index.html';
+				location = '/index.html';
+				alter("登录中");
 			} else {
 				alert(rt.message);
 			}
