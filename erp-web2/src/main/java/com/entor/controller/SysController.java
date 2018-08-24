@@ -27,6 +27,7 @@ public class SysController extends BaseController {
 		if (emps.size() > 0) {
 			session.setAttribute("emp", emps.get(0)); //把当前登录用户保存在Session中
 			return ajaxReturn(true, "登录成功");
+			
 		} else {
 			return ajaxReturn(false, "用户名或密码不正确");
 		}

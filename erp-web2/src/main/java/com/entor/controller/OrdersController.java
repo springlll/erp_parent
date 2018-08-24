@@ -26,7 +26,7 @@ public class OrdersController extends BaseController {
 	//加载订单表格的数据
 	@RequestMapping(path="/getData.do", produces={"application/json;charset=utf-8"})
 	@ResponseBody
-	public Map getData(Integer page, Integer rows) {
+	public Map getData(Orders orders ,Integer page, Integer rows) {
 		if (page == null) {
 			page = 1;
 		}
@@ -34,12 +34,19 @@ public class OrdersController extends BaseController {
 			rows = 10;
 		}
 		PageHelper.startPage(page, rows); //设置分页的信息
-		List<Orders> orderList = ordersService.find();
-		int total = ordersService.count(null);
+		List<Orders> orderList = null;
+		int total =0;
+		if(!"".equals(orders.getStarter())) {
+			orderList =	ordersService.find(orders);
+		total = ordersService.count(orders);
+		}else {
+			orderList = ordersService.find();
+			total = ordersService.count(null);
+		}
 		Map map = new HashMap();
 		map.put("rows", orderList);
 		map.put("total", total);
 		return map;
-	}
 	
+	}
 }

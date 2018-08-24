@@ -14,13 +14,13 @@
 		var data = getFormData("loginform");
 		
 		$.post('sys/login.do', data, function(rt) {
-			alert("你好");
-			if (rt.status) {
-				alert("请确认");
-				location = 'index.html';
+			if (rt.success) {
+				alert("登录成功");
+				location = "/index.html";
 				
 			} else {
 				alert(rt.message);
+				
 			}
 		});
 	} 

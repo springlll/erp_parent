@@ -8,7 +8,7 @@ http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <artifactId>erp_parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
   </parent>
-  <artifactId>erp-web</artifactId>
+  <artifactId>erp-web2</artifactId>
   <dependencies>
   	<dependency>
   		<groupId>com.entor.erp</groupId>
