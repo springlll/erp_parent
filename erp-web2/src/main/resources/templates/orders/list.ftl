@@ -11,7 +11,7 @@
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/date.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/datagrid-detailview.js"></script>
-
+<script type="text/javascript" src="${request.contextPath}/adminjs/index.js"></script>
 
 <script type="text/javascript">
 	var stats =  new Array();
@@ -132,10 +132,16 @@
 	});
 	
 });
+$(function(){
+$("#searchBtn").bind('click', function() {
+	
+	var data = getFormData("searchForm");
+	
+	$("#grid").datagrid('reload', data);
+	alert("ok");
+});
+})
 
-	
-		
-	
 	
 </script>
 <script></script>
@@ -146,13 +152,11 @@
 		订单状态：<input name = "state" class="easyui-combobox" data-options="data:
 		[
 		{uuid:'',name:'全部'},
-		{uuid:'0',name:'未审核'},
+		{uuid:'0',name:'未审核'}, 
 		{uuid:'1',name:'已审核'},
 		{uuid:'2',name:'已确认'},
-		{uuid:'3',name:'已入库'}
-				
-		],
-		valueFiled:'uuid',textField:'name'
+		{uuid:'3',name:'已入库'} ],
+		valueField:'uuid',textField:'name'"
 		/>
 		
 		<input type ="button" id="searchBtn" value="开始表演"/>

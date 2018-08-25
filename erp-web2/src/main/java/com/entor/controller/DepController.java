@@ -22,9 +22,9 @@ public class DepController extends SysController {
 	private IDepBus depBus;
 
 	@RequestMapping(path="/list.do")
-	public  void list()  {
+	public  String list()  {
 		System.out.println("dep"+depBus);
-
+		return "dep/list";
 	}
 
 	@RequestMapping(path="/getData.do", produces="application/json;charset=utf-8")

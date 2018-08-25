@@ -10,7 +10,7 @@ public abstract class BaseServiceImpl<T> implements IBaseService<T>{
 
 	public abstract Mapper<T> getMapper();
 	@Override
-	public List<T> find() {
+	public List<T> findAll() {
 		// TODO Auto-generated method stub
 		return getMapper().selectAll();
 	}

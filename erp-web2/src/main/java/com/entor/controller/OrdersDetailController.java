@@ -16,7 +16,7 @@ import com.entor.entity.OrdersDetail;
 public class OrdersDetailController extends BaseController{
 	@Autowired
 	private IOrdersDetailService ordersDetailService;
-	@RequestMapping(path="/list",produces="application/json;charset=utf-8")
+	@RequestMapping(path="/list.do",produces="application/json;charset=utf-8")
 	@ResponseBody
 	public List<OrdersDetail> listDetail(OrdersDetail ordersDetail){
 		

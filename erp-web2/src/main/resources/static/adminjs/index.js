@@ -16,7 +16,9 @@ $(function(){
 	tabCloseEven();
 	
 	
-})
+});
+
+
 /*window.onload = function(){
 	$('#loading-mask').fadeOut();
 	$.post("/menu/getData.do",function(data){
