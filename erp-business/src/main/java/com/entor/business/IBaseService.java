@@ -3,7 +3,7 @@ package com.entor.business;
 import java.util.List;
 
 public interface IBaseService<T> {
-	
+	//
 	List<T> findAll();
 	List<T> find(T entity);
 	
