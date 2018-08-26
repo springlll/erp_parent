@@ -25,5 +25,5 @@ public class OrdersDetailController extends BaseController{
 		
 		
 	}
-	
+
 }

@@ -2,13 +2,14 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
+<title>采购申请</title>
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/easyui/themes/icon.css">
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
+
 <script type="text/javascript">
 	var lastRowIndex;
 
@@ -86,7 +87,7 @@ $(function() {
 			iconCls:'icon-remove',
 			text:'删掉',
 			handler:function(){
-			alert("你完了");
+			
 				var selectedRow = $('#grid').datagrid('getSelected');
 				if(selectedRow == null){
 				deleteRow(lastRowIndex);
@@ -108,20 +109,8 @@ $(function() {
 				bindGridEvent();
 			}
 	});	
-	var prceEditor = $('#grid').datagrid('getEditor',{
-	index: lastRowIndex, field: 'price'});
-	$(priceEditor.target).bind('keyup',function(){
-		cal();
 	});
-});
-	
-	//删除行
-	function deleteRow(index) {
-		//结束编辑
-		$("#grid").datagrid('endEdit', lastRowIndex);
-		//删除一行
-		$("#grid").datagrid('deleteRow', index);
-	}
+
 		//计算金额
 	function cal() {
 		//得到数量编辑框
@@ -141,7 +130,32 @@ $(function() {
 		//重新把金额设置到金额列中
 		$("#grid").datagrid('getRows')[lastRowIndex].money = money.toFixed(2);
 	}
-		//计算总金额
+	
+	//绑定事件
+	function bindGridEvent() {
+		//获取数量编辑框
+		var numEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'num'});
+		//绑定keyup事件
+		$(numEditor.target).bind('keyup', function() {
+			cal();
+			sum();
+		});
+
+		//获取价格编辑框
+		var priceEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'price'});
+		//绑定keyup事件
+		$(priceEditor.target).bind('keyup', function() {
+			cal();
+		});
+	}	
+	//删除行
+	function deleteRow(index) {
+		//结束编辑
+		$("#grid").datagrid('endEdit', lastRowIndex);
+		//删除一行
+		$("#grid").datagrid('deleteRow', index);
+	}	
+	//计算总金额
 	function sum() {
 		var rows = $("#grid").datagrid('getRows');
 		var totalMoney = 0;
@@ -151,47 +165,32 @@ $(function() {
 		//alert(totalMoney);
 		$("#sum").html(totalMoney);
 		$("#totalmoney").val(totalMoney);
-	}
-	//保存按钮
-	function save() {
-		//关闭当前编辑行
+	}	
+	
+	//提交按钮
+	$("#saveBtn").bind('click', function() {
+		//执行保存之前必须先结束编辑
 		$('#grid').datagrid('endEdit', lastRowIndex);
-		//获取所有的行 
-		var rows = $('#grid').datagrid('getRows');
-		//把所有行转换json格式的字符串
-		var jsonData = JSON.stringify(rows);
-		//alert(jsonData);
 		//提取表单数据
 		var data = getFormData('orderForm');
-		//把表格的数据添加到json对象中
-		data['json'] = jsonData;
-		//发送异步请求
-		$.post('${request.contextPath}/orders/save.do', data, function(rt) {
+		//提取表格数据
+		var rows = $('#grid').datagrid('getRows');
+		//向data追加属性json
+		data['json'] = JSON.stringify(rows);
+		//alert(JSON.stringify(data));
+		//异步提交表单
+		$.post('${request.contextPath}/orders/addOrder.do', data, function(rt) {
 			if (rt.status) {
 				//清空表格的数据
 				$('#grid').datagrid('reload', {total: 0, rows: []});
 				//设置总金额为0
 				$('#sum').html('0');
-			} 
-			$.messager.alert('提示', rt.message);
+				}
+				$.messager.alert('提示', rt.message);
 		}, 'json');
-	}	
-		//绑定事件
-	function bindGridEvent() {
-		//获取数量编辑框
-		var numEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'num'});
-		//绑定keyup事件
-		$(numEditor.target).bind('keyup', function() {
-			cal();
-			sum();
-		});
-		//获取价格编辑框
-		var priceEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'price'});
-		//绑定keyup事件
-		$(priceEditor.target).bind('keyup', function() {
-			cal();
-		});
-	}	
+	});
+
+
 </script>
 </head>
 <body>
@@ -200,7 +199,7 @@ $(function() {
 	<input type="hidden" id="totalmoney" name="totalmoney"/>
 	</form>
 	<table id="grid"></table><br/>
-	<input type="button" value="不能点"  style="background-color:#CCC" />
-	合计：<span id="sum">0</span>
+	<input type="button" onclick="saveBtn()" value="马上申请" style="background-color:#CCC" />
+	合计：<span id="sum">0</span><br>
 </body>
 </html>

@@ -16,6 +16,4 @@ public interface OrdersMapper extends Mapper<Orders>{
 			+ ",#{totalmoney},#{state})")
 	@SelectKey(statement="select orders_seq.nextval as uuid from dual",keyProperty="uuid",before = true,resultType=Long.class)
 					void add(Orders orders);
-	
-
 }
