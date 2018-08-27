@@ -8,11 +8,21 @@
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${request.contextPath}/js/request.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
+
 <script type="text/javascript">
+
 	var lastRowIndex;
 
 $(function() {
+	if(Request['type'] == 1){
+	document.title='采购订单录入';
+		
+	}
+	if(Request['type' == 2]){
+	document.title = '销售订单录入';
+	}
 		//供应商下拉框
 		$("#supplier").combogrid({
 			url: '${request.contextPath}/supplier/getComboData.do', //后台返回json数组对象
@@ -25,7 +35,8 @@ $(function() {
 			   {field: 'address', title: '地址', width: 100},
 			   {field: 'contact', title: '联系人', width: 100},
 			   {field: 'tele', title: '电话', width: 100}
-			]]
+			]],
+			mode:'remote'
 		});	
 	$("#grid").datagrid({
 		columns: [[
@@ -176,7 +187,7 @@ $(function() {
 		data['json'] = JSON.stringify(rows);
 		//alert(JSON.stringify(data));
 		//异步提交表单
-		$.post('${request.contextPath}/orders/addOrder.do', data, function(rt) {
+		$.post('${request.contextPath}/orders/addOrder.do?type='+Request['type'],data function(rt) {
 			$.messager.alert('提示', rt.message);
 		}, 'json');
 
@@ -186,11 +197,11 @@ $(function() {
 </head>
 <body>
 	<form id="orderForm">
-	供应商： <input id ="supplier" name="uuid"/>
+	供应商： <input id ="supplier" name="uuid"/></br>
 	<input type="hidden" id="totalmoney" name="totalmoney"/>
 	</form>
 	<table id="grid"></table><br/>
 	<input type="button" onclick="saveBtn()" value="马上申请" style="background-color:#CCC" />
-	合计：<span id="sum">0</span><br>
+	合计：<span id="sum">0</span></br>
 </body>
 </html>
