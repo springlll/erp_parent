@@ -9,7 +9,6 @@
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
-
 <script type="text/javascript">
 	var lastRowIndex;
 
@@ -166,10 +165,8 @@ $(function() {
 		$("#sum").html(totalMoney);
 		$("#totalmoney").val(totalMoney);
 	}	
-	
-	//提交按钮
-	$("#saveBtn").bind('click', function() {
-		//执行保存之前必须先结束编辑
+	//保存按钮
+	function saveBtn() {
 		$('#grid').datagrid('endEdit', lastRowIndex);
 		//提取表单数据
 		var data = getFormData('orderForm');
@@ -180,22 +177,16 @@ $(function() {
 		//alert(JSON.stringify(data));
 		//异步提交表单
 		$.post('${request.contextPath}/orders/addOrder.do', data, function(rt) {
-			if (rt.status) {
-				//清空表格的数据
-				$('#grid').datagrid('reload', {total: 0, rows: []});
-				//设置总金额为0
-				$('#sum').html('0');
-				}
-				$.messager.alert('提示', rt.message);
+			$.messager.alert('提示', rt.message);
 		}, 'json');
-	});
 
+}
 
 </script>
 </head>
 <body>
 	<form id="orderForm">
-	供应商： <input id ="supplier"/>
+	供应商： <input id ="supplier" name="uuid"/>
 	<input type="hidden" id="totalmoney" name="totalmoney"/>
 	</form>
 	<table id="grid"></table><br/>

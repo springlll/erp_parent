@@ -100,7 +100,7 @@ var g_index2;  //子表格的行索引
 			return "<table id='ddv_" + index + "'></table>";
 		},
 		onExpandRow: function(index,row){
-		alert("展开了");
+		
 			$('#ddv_'+index).datagrid({
 			    url: basePath + row.uuid,
 					columns: [[
@@ -191,7 +191,8 @@ function doInStore() {
 	var data = getFormData("orderForm");
 	//异步提交数据
 	$.post(basePath + '/orders/doInStore.do', data, function(rt) {
-		if (rt.status) {
+		if (rt.success) {
+			alert("aas");
 			//$('#grid').datagrid('reload'); 
 			//关闭窗口
 			$("#orderWindow").window('close');

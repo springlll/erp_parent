@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.entor.business.IOrdersService;
 import com.entor.entity.Orders;
@@ -19,6 +20,7 @@ import com.entor.mapper.StoreOperMapper;
 import tk.mybatis.mapper.common.Mapper;
 
 @Service
+@Transactional(readOnly=true)
 public  class OrdersServiceImpl extends BaseServiceImpl<Orders> implements IOrdersService{
 	@Autowired
 	private OrdersMapper mapper;
@@ -34,20 +36,22 @@ public  class OrdersServiceImpl extends BaseServiceImpl<Orders> implements IOrde
 	}
 	@Override
 	public void addOrders(Orders orders) {
-		orders.setType("1");
-		orders.setState("0");
-		orders.setCreatetime(new Date());
-		mapper.add(orders);
-		for(OrdersDetail  orderDetail : orders.getOrdersDetails()) {
-			orderDetail.setState("0");
-			orderDetail.setOrdersuuid(orders.getUuid());
-			ordersDetailMapper.insertSelective(orderDetail);
+		System.out.println(orders);
+		//保存订单
+		mapper.insertPrimaryKey(orders);
+		//保存订单明细
+		for (OrdersDetail ordersDetail : orders.getOrderDetails()) {
+			
+			ordersDetail.setOrdersuuid(orders.getUuid()); //设置关联订单的编号
+			ordersDetail.setState("0"); //订单明细状态为“未入库”
+			ordersDetailMapper.insertSelective(ordersDetail);
 		}
-		
 	}
 
 	@Override
-	public void doInstore(Integer ordersdetailuuid, Integer storeuuid, Long empuuid) {
+	public void doInstore(Integer ordersdetailuuid, Integer storeuuid,
+			Long empuuid) {
+		//1.更新订单明细的状态
 		OrdersDetail ordersDetail = ordersDetailMapper.selectByPrimaryKey(
 				ordersdetailuuid.longValue());
 		ordersDetail.setEnder(empuuid.intValue()); //设置操作员
@@ -91,5 +95,5 @@ public  class OrdersServiceImpl extends BaseServiceImpl<Orders> implements IOrde
 			mapper.updateByPrimaryKeySelective(orders);
 		}
 	}
-}
 
+}

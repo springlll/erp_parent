@@ -16,8 +16,6 @@ public class Orders {
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="orders_seq")
 	@SequenceGenerator(name="orders_seq",sequenceName="orders_seq", allocationSize=1)
-
-	
 	private Long uuid;
 	private Date createtime;
 	private Date checktime;
@@ -32,5 +30,5 @@ public class Orders {
 	private Double totalmoney;
 	private String state;
 	@Transient
-	private List<OrdersDetail> ordersDetails;
+	private List<OrdersDetail> orderDetails;
 }

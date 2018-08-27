@@ -23,7 +23,8 @@
 	<div id="orderWindow" class="easyui-window" title="订单明细"
 		style="width:300px;height:200px;" data-options="closed:true">
 		<form id="orderForm">
-			<input type="hidden" id="id" name="orderdetailuuid"/>
+			<input type="hidden" id="id" name="ordersdetailuuid"/>
+												
 			<table width="100%">
 				<tr>
 					<td>商品编号：</td><td id="goodsuuid"></td>

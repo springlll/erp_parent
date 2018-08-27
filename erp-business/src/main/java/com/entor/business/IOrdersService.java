@@ -9,5 +9,5 @@ public interface IOrdersService extends IBaseService<Orders>{
 	void addOrders(Orders orders);
 
 
-	void doInstore(Integer ordersdetailuuid, Integer storeuuid, Long uuid);
+	void doInstore(Integer ordersdetailuuid, Integer storeuuid, Long empuuid);
 }

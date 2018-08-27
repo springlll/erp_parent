@@ -15,7 +15,7 @@
 		
 		$.post('sys/login.do', data, function(rt) {
 			if (rt.success) {
-				alert("登录成功");
+				
 				location = "/index.html";
 				
 			} else {
@@ -23,7 +23,15 @@
 				
 			}
 		});
+
 	} 
+	
+ 	$(document).keyup(function(event){
+		if(event.keyCode==32){	
+			alert("按下了Enter");
+		} 
+	}); 
+	
 </script>
 
 </head>
