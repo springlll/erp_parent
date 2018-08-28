@@ -1,10 +1,28 @@
+var supplierName;
 
 var stats =  new Array();
-stats[0] = '未审核';
-stats[1] = '已审核';
-stats[2] = '已确认';
-stats[3] = '已入库';
-
+if(Request['type' == 1]){
+	stats[0] = '未审核';
+	stats[1] = '已审核';
+	stats[2] = '已确认';
+	stats[3] = '已入库';
+	supplierName ='供应商';
+}
+	if(Request['type'] == 2){
+			stats[0]='未出库';
+			stats[3]='已出库';
+			supplierName='客户';
+	}
+$(function(){
+	//绑定按钮
+	$("#searchBtn").bind('click',function(){
+		var data = getFormData("searchForm");
+		if (data['state'] == '') {
+			delete data.state; //删除对象属性
+		}
+	$("#grid").datagrid('reload', data);
+	});
+});
 var g_index;   //主表格的行索引
 var g_index2;  //子表格的行索引
 	$(function() {
@@ -27,7 +45,7 @@ var g_index2;  //子表格的行索引
 				return to_date(value);
 			}},
 			{field: 'type', title: '订单类型', width: 80, formatter: function(value)
-			{return value==1 ? '采购订单':(value==2?'小时订单':'未下单');}
+			{return value==1 ? '采购订单':(value==2?'销售订单':'未下单');}
 			},
 				{field: 'creater', title: '下单员', width: 80, formatter: function(value, row, rowIndex) {
 					if (value != null) {
@@ -67,19 +85,7 @@ var g_index2;  //子表格的行索引
 					return "<span id='ender_" + rowIndex + "'></span>";
 					
 				}},
-			
-			{field: 'supplieruuid', title: '供应商', width: 80,
-			formatter: function(value, row, rowIndex) {
-					if (value != 1) {
-						$.post(basePath+ {uuid: value}, 
-						function(rt) {
-							$("#supplieruuid_" + rowIndex).html(rt.name);
-						}, 'json');
-					}
-					return "<span id='ender_" + rowIndex + "'></span>";
-					
-				}			
-			},
+
 			{field: 'totalMoney', title: '总金额', width: 80},
 			{field: 'state', title: '订单状态', formatter: function(value) {
 					return stats[value];
@@ -123,7 +129,13 @@ var g_index2;  //子表格的行索引
 						}},
 						{field: 'storeuuid', title: '仓库编号', width: 100},
 						{field: 'state', title: '状态', width: 100, formatter: function(value) {
+							if(Request['type' == 1]){
 							return value == 0 ? '未入库' : ((value == 1) ? '已入库' : '');
+						}
+						if(Request['type' == 2]){
+						return value == 0 ? '未入库' : ((value == 1) ? '已出库' : '');
+					}
+						return '';
 						}}
 					]],
 					singleSelect: true,
@@ -154,6 +166,15 @@ var g_index2;  //子表格的行索引
 				
 			}
 		});
+	if(Request['type'] == 2){
+		$('#grid').datagrid('hideColumn','checktime');
+		$('#grid').datagrid('hideColumn','starttime');
+		$('#grid').datagrid('hideColumn','checker');
+		
+		$('#grid').datagrid('hideColumn','starter');
+	}
+
+	
 	});
 
 //提交审核
@@ -163,6 +184,7 @@ function doCheck(orderuuid) {
 		if (flag) {
 			$.post(basePath + '/orders/doCheck.do', {uuid: orderuuid}, function(rt) {
 				if (rt.success) {
+					
 					$('#grid').datagrid('reload'); //刷新表格
 				}
 				$.messager.alert('提示', rt.message);
@@ -194,18 +216,29 @@ function doInStore() {
 		if (rt.success) {
 			alert("aas");
 			//$('#grid').datagrid('reload'); 
-			//关闭窗口
 			$("#orderWindow").window('close');
-			//移出子表格当前操作行
 			$('#ddv_' + g_index).datagrid('deleteRow', g_index2);
-			//判断子表格是否有记录，如果没有，则删除主表格的行
 			if ($('#ddv_' + g_index).datagrid('getRows').length == 0) {
 				$('#grid').datagrid('deleteRow', g_index);
-			} 
-
-			
+			} 			
 		}
 		$.messager.alert('提示', rt.message);
 		
 	}, 'json');
-}
+	}
+	//出库
+	function doOutStore(){
+		var data = getFormData('orderForm');
+		$.post(basePath+'orders/doOutStore.do',data,function(rt){
+			
+			if(rt.success){
+				$("#ordersWindow").window('close');
+				$('#ddv_' + g_index).datagrid('deleteRow', g_index2);
+			if($("ddv_"+g_index).datagrid('getRows').length == 0)n{
+				$("#grid").datagrid('deleteRow', g_index);
+			}
+			}
+			$.messager.alert('提示', rt.message);
+		},'json');
+	}
+	

@@ -20,9 +20,9 @@ public class SupplierController extends BaseController {
 	//加载供应商下拉表格数据
 	@RequestMapping(path="/getComboData.do", produces={"application/json;charset=utf-8"})
 	@ResponseBody
-	public List<Supplier> getComboData(String q) {
+	public List<Supplier> getComboData(String q,String type) {
 		Supplier supplier = new Supplier();
-		supplier.setType("1");
+		supplier.setType(type);
 		supplier.setName(q);
 		System.out.println(q);
 		return supplierService.findByCond(supplier);

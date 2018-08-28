@@ -8,10 +8,12 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.entor.business.IOrdersService;
+import com.entor.entity.OrderReport;
 import com.entor.entity.Orders;
 import com.entor.entity.OrdersDetail;
 import com.entor.entity.StoreDetail;
 import com.entor.entity.StoreOper;
+import com.entor.exception.OutOfStockException;
 import com.entor.mapper.OrdersDetailMapper;
 import com.entor.mapper.OrdersMapper;
 import com.entor.mapper.StoreDetailMapper;
@@ -95,5 +97,58 @@ public  class OrdersServiceImpl extends BaseServiceImpl<Orders> implements IOrde
 			mapper.updateByPrimaryKeySelective(orders);
 		}
 	}
-
+	@Override
+	public void doOutstore(Integer ordersdetailuuid, Integer storeuuid, Long empuuid) {
+		//更新订单状态
+		OrdersDetail ordersDetail = ordersDetailMapper.selectByPrimaryKey
+				(ordersdetailuuid.longValue());
+		ordersDetail.setEnder(empuuid.intValue());
+		ordersDetail.setEndtime(new Date());
+		ordersDetail.setStoreuuid(storeuuid);
+		ordersDetail.setState("1"); //修改为“已出库状态”
+		ordersDetailMapper.updateByPrimaryKeySelective(ordersDetail);
+		//修改商品库存
+		StoreDetail storeDetail = new StoreDetail();
+		storeDetail.setStoreuuid(storeuuid.longValue());
+		storeDetail.setGoodsuuid(ordersDetail.getGoodsuuid());
+		StoreDetail sd = storeDetailMapper.selectOne(storeDetail);
+		if (sd != null) { //如果不为空就代表该商品已经存在
+			int amount = sd.getNum() - ordersDetail.getNum();
+			if (amount < 0) {
+				//进行库存不足的处理...
+				throw new OutOfStockException("库存不足");
+			} else {
+				sd.setNum(amount);
+				storeDetailMapper.updateByPrimaryKeySelective(sd);
+			}
+		} else { //如果商品不存在
+			//进行库存不足的处理...
+			throw new OutOfStockException("库存不足");
+		}
+		//添加记录
+		StoreOper storeOper = new StoreOper();
+		storeOper.setEmpuuid(empuuid);
+		storeOper.setOpertime(new Date());
+		storeOper.setStoreuuid(storeuuid.longValue());
+		storeOper.setGoodsuuid(ordersDetail.getGoodsuuid());
+		storeOper.setNum(ordersDetail.getNum());
+		storeOper.setType("2");
+		//是否全部出库
+		OrdersDetail temp = new OrdersDetail();
+		temp.setState("0");
+		temp.setOrdersuuid(ordersDetail.getOrdersuuid());
+		List<OrdersDetail> ordersDetailList  = ordersDetailMapper.select(temp);
+		if (ordersDetailList.size()  == 0) { //如果集合为空，那么就代表所有商品已出库
+			Orders orders = new Orders();
+			orders.setUuid(ordersDetail.getOrdersuuid());
+			orders.setState("3");
+			orders.setEndtime(new Date());
+			orders.setEnder(empuuid);
+			mapper.updateByPrimaryKeySelective(orders);
+		}
+	}
+	@Override
+	public List<OrderReport> getOrderReport(Date startDate, Date endDate) {
+		return mapper.selectOrderReport(startDate, endDate);
+	}
 }

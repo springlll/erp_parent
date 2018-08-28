@@ -17,6 +17,7 @@ import com.entor.business.IOrdersService;
 import com.entor.entity.Emp;
 import com.entor.entity.Orders;
 import com.entor.entity.OrdersDetail;
+import com.entor.exception.OutOfStockException;
 import com.github.pagehelper.PageHelper;
 
 @Controller
@@ -36,6 +37,8 @@ public class OrdersController extends BaseController {
 	public void start() {}
 	@RequestMapping("/instore.do")
 	public void instore() {}
+	@RequestMapping("/outstore.do")
+	public void outstore() {}
 	//
 	//加载订单表格的数据
 	@RequestMapping(path="/getData.do", produces={"application/json;charset=utf-8"})
@@ -50,13 +53,14 @@ public class OrdersController extends BaseController {
 		PageHelper.startPage(page, rows); //设置分页的信息
 		List<Orders> orderList = null;
 		int total =0;
-		if(!"".equals(orders.getState())) {
+		/*if(!"".equals(orders.getState())) {*/
 			orderList =	ordersService.find(orders);
 		total = ordersService.count(orders);
-		}else {
+		/*}
+		else {
 			orderList = ordersService.findAll();
 			total = ordersService.count(null);
-		}
+		}*/
 		Map map = new HashMap();
 		map.put("rows", orderList);
 		map.put("total", total);
@@ -77,8 +81,8 @@ public class OrdersController extends BaseController {
 			orders.setCreater(emp.getUuid()); //设置下单人
 			orders.setCreatetime(new Date()); //设置下单时间
 			orders.setSupplieruuid(uuid);
-			orders.setType("1"); //采购类型为“采购订单”
-			orders.setState("0"); //订单状态为“未审核”
+			/*orders.setType("1"); //采购类型为“采购订单”
+*/			orders.setState("0"); //订单状态为“未审核”
 			//把表格的json格式数据转换成OrderDetail集合 
 			List<OrdersDetail> orderDetails = JSON.parseArray(json, OrdersDetail.class);
 			orders.setOrderDetails(orderDetails);
@@ -150,6 +154,27 @@ public class OrdersController extends BaseController {
 		} catch (Exception e) {
 			e.printStackTrace();
 			return ajaxReturn(false, "入库操作失败");
+		}
+	}
+	//订单出库
+	@RequestMapping(path="/doOutStore.do", produces={"application/json;charset=utf-8"})
+	@ResponseBody
+	public Map doOutStore(HttpSession session, Integer ordersdetailuuid, Integer storeuuid) {
+		System.out.println("ordersdetailuuid = " + ordersdetailuuid + ", storeuuid = " + storeuuid);
+		try {
+			Object o = session.getAttribute("emp");
+			if (o == null) {
+				return ajaxReturn(false, "请先登录");
+			}
+			ordersService.doOutstore(ordersdetailuuid, storeuuid, ((Emp)o).getUuid());
+			return ajaxReturn(true, "出库操作成功");
+		} 
+		catch(OutOfStockException e){
+			return ajaxReturn(false, e.getMessage());
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+			return ajaxReturn(false, "出库操作失败");
 		}
 	}
 }

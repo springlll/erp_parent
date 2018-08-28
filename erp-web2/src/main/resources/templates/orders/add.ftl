@@ -2,7 +2,7 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>采购申请</title>
+<title>采购申请/销售订单</title>
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/easyui/themes/default/easyui.css">
 <link rel="stylesheet" type="text/css" href="${request.contextPath}/easyui/themes/icon.css">
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.min.js"></script>
@@ -14,7 +14,8 @@
 <script type="text/javascript">
 
 	var lastRowIndex;
-
+	var type =Request['type'];
+	
 $(function() {
 	if(Request['type'] == 1){
 	document.title='采购订单录入';
@@ -25,7 +26,7 @@ $(function() {
 	}
 		//供应商下拉框
 		$("#supplier").combogrid({
-			url: '${request.contextPath}/supplier/getComboData.do', //后台返回json数组对象
+			url: '${request.contextPath}/supplier/getComboData.do?type='+Request['type'], //后台返回json数组对象
 			idField: 'uuid', //<input name="uuid" value="name"/>
 			textField: 'name',
 			panelWidth: 700, //设置下拉表格的宽度
@@ -56,7 +57,12 @@ $(function() {
 							//得到price的编辑器
 							var priceEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'price'});
 							//设置price编辑器的值
-							$(priceEditor.target).val(record.inprice);
+							if(type==1){
+								$(priceEditor.target).val(record.inprice);
+							}
+							if(type==2){
+							$(priceEditor.target).val(record.outprice);
+							}
 							//重新计算总金额
 							cal();
 							//计算总金额
@@ -69,6 +75,7 @@ $(function() {
 					options: {precision: 2, disabled: true}
 				}},
 			{field: 'num', title: '数量', width: 100,editor: 'numberbox'},
+			
 			{field: 'money', title: '金额', width: 100, editor: {
 					type: 'numberbox',
 					options: {precision: 2, disabled: true}
@@ -108,9 +115,10 @@ $(function() {
 				lastRowIndex = $("#grid").datagrid('getRows').length - 1;
 			}
 		}],
-	onClickRow: function(rowIndex, rowData) { //单击行触发的事件，rowIndex代表点击行的索引，rowData代表行对象
+		
+	onClickRow: function(rowIndex, rowData) { 
 				//关闭上一次编辑行
-				$("#grid").datagrid('endEdit', 0);
+				$("#grid").datagrid('endEdit', lastRowIndex);
 				//得到当前点击的行索引
 				lastRowIndex = rowIndex;
 				//设置可编辑状态
@@ -136,6 +144,7 @@ $(function() {
 		//得到金额的编辑器
 		var moneyEditor = $("#grid").datagrid('getEditor', {index: lastRowIndex, field: 'money'});
 		//设置金额编辑器的值
+		
 		$(moneyEditor.target).val(money.toFixed(2));
 		//重新把金额设置到金额列中
 		$("#grid").datagrid('getRows')[lastRowIndex].money = money.toFixed(2);
@@ -178,17 +187,22 @@ $(function() {
 	}	
 	//保存按钮
 	function saveBtn() {
+		
 		$('#grid').datagrid('endEdit', lastRowIndex);
-		//提取表单数据
-		var data = getFormData('orderForm');
-		//提取表格数据
 		var rows = $('#grid').datagrid('getRows');
-		//向data追加属性json
-		data['json'] = JSON.stringify(rows);
-		//alert(JSON.stringify(data));
+		var jsonData = JSON.stringify(rows);
+		var data = getFormData('orderForm');
+		//alert(jsonData);
+		
+		data['json'] = jsonData;
+		data['type'] = type;
 		//异步提交表单
-		$.post('${request.contextPath}/orders/addOrder.do?type='+Request['type'],data function(rt) {
-			$.messager.alert('提示', rt.message);
+		$.post('${request.contextPath}/orders/addOrder.do', data, function(rt) {
+			if(rt.success){
+				$('#grid').datagrid('loadData', {total: 0, rows: []});
+				$('#sum').html('0');
+			}
+			$.messager.alert('提示',rt.message);
 		}, 'json');
 
 }
@@ -197,11 +211,23 @@ $(function() {
 </head>
 <body>
 	<form id="orderForm">
-	供应商： <input id ="supplier" name="uuid"/></br>
+	<script>
+	
+	if(type ==1 ){
+	
+		document.write('供应商：');
+	}
+	if(type==2){
+		document.write('客户');
+	}
+	
+	 </script>
+	 
+	   <input id ="supplier" name="uuid"/></br>
 	<input type="hidden" id="totalmoney" name="totalmoney"/>
 	</form>
 	<table id="grid"></table><br/>
-	<input type="button" onclick="saveBtn()" value="马上申请" style="background-color:#CCC" />
+	<input type="button" onclick="saveBtn()" value="请开始申请 " style="background-color:#CCC" />
 	合计：<span id="sum">0</span></br>
 </body>
 </html>

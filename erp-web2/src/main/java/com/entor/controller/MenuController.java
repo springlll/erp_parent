@@ -25,7 +25,7 @@ public class MenuController extends SysController{
 		menu.setPid("0");
 		List<Menu> menus = menuService.findMenus(menu);
 		Map map = new HashMap<>();
-		System.out.println(menus);
+		/*System.out.println(menus);*/
 		map.put("menus", menus);
 		return map;
 	}
