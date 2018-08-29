@@ -1,12 +1,28 @@
 package com.entor.controller;
 
+import java.awt.Font;
+import java.io.IOError;
+import java.io.IOException;
+import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.jfree.chart.ChartFactory;
+import org.jfree.chart.ChartUtilities;
+import org.jfree.chart.JFreeChart;
+import org.jfree.chart.plot.PiePlot;
+import org.jfree.chart.plot.PiePlot3D;
+import org.jfree.chart.title.TextTitle;
+import org.jfree.data.general.DefaultPieDataset;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,6 +60,8 @@ public class OrdersController extends BaseController {
 	public void outstore() {}
 	@RequestMapping("/report.do")
 	public void report() {}
+	@RequestMapping("/export.do")
+	public void export() {}
 	//
 	//加载订单表格的数据
 	@RequestMapping(path="/getData.do", produces={"application/json;charset=utf-8"})
@@ -187,6 +205,41 @@ public List<OrderReport> getOrderReportData( Date startDate,Date endDate){
 	return ordersService.getOrderReport(startDate, endDate);
 }
 
-
+@RequestMapping("/chart.do")
+public void getOrdersChart(HttpServletResponse response,Date startDate,Date endDate) throws IOException {
+	
+	DefaultPieDataset dataset = new DefaultPieDataset();
+	List<OrderReport> orderReports= ordersService.getOrderReport(startDate, endDate);
+	for(OrderReport orderReport : orderReports) {
+		
+		dataset.setValue(orderReport.getName(),orderReport.getMoney());
+	}
+	JFreeChart chart = ChartFactory.createPieChart("销售统计表", dataset, false, false, false);
+	chart.setTitle(new TextTitle());
+	PiePlot plot = (PiePlot) chart.getPlot();
+	plot.setLabelFont(new Font("宋体",Font.BOLD,15));
+	ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 350, 500);
+}
+@RequestMapping(path="/export1 .do")
+	
+	public void export(HttpServletResponse response,Date startDate,Date endDate) throws IOException{
+	response.setHeader("Content-Disposition", "attachement;filename="+URLEncoder.encode("销售统计表.xls","utf-8"));
+	HSSFWorkbook wb = new HSSFWorkbook();
+	HSSFSheet sheet = wb.createSheet("销售统计表");
+	List<OrderReport> orderReports = getOrderReportData(startDate, endDate);
+	int rowIndex = 0;
+	for (OrderReport orderReport : orderReports) {
+	
+	HSSFRow row = sheet.createRow(rowIndex++);
+	
+	HSSFCell nameCell = row.createCell(0);
+	HSSFCell moneyCell = row.createCell(1);
+	nameCell.setCellValue(orderReport.getName());
+	moneyCell.setCellValue(orderReport.getMoney());
+	}
+	wb.write(response.getOutputStream());
+	wb.close();
+	
+}
 }
 

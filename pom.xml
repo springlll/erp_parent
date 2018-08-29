@@ -90,6 +90,12 @@
 	<artifactId>jfreechart</artifactId>
 	<version>1.0.0</version>
 </dependency>
+<!-- 导出excel -->
+<dependency> 
+	<groupId>org.apache.poi</groupId> 
+	<artifactId>poi</artifactId> 
+	<version>3.11</version> 
+</dependency>
 		
 	</dependencies>
 	
