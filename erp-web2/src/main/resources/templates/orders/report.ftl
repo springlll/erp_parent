@@ -24,18 +24,17 @@
 		$("#countBtn").bind ('click',function(){
 		var data = getFormData('searchForm');
 		$('#grid').datagrid('load',data);
-		});
+		$('#grid').datagrid('load',data);
+			$('#chart').attr('src', '${request.contextPath}/orders/chart.do?startDate=' + data['startDate']
+				+ '&endDate = ' + data['endDate']);
 		
-			
+		});
+		$("#exportBtn").bind('click', function() {
+			var data = getFormData('searchForm');
+			window.open('${request.contextPath}/orders/exportExcel.do?startDate=' + data['startDate']
+				+ '&endDate=' + data['endDate']);
+		});
 
-	});
-$(function(){
-	$("#exportBtn").bind('click',function(){
-	
-		var data = getFormData('searchform');
-		window.open('${request.contextPath}/orders/export.do?startDate='
-		+data['startDate'] + '&endDate=' + data['endDate']);
-	});
 	});
 </script>
 
