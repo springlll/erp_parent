@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import com.entor.business.ISupplierService;
@@ -16,6 +17,7 @@ import tk.mybatis.mapper.entity.Example;
 import tk.mybatis.mapper.entity.Example.Criteria;
 
 @Service
+@Transactional(readOnly = true)
 public class SupplierServiceImpl extends BaseServiceImpl<Supplier> implements ISupplierService{
 	@Autowired
 	private SupplierMapper mapper;

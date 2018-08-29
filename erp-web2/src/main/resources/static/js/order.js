@@ -1,6 +1,8 @@
 var supplierName;
 
 var stats =  new Array();
+var g_index;   //主表格的行索引
+var g_index2;  //子表格的行索引
 if(Request['type' == 1]){
 	stats[0] = '未审核';
 	stats[1] = '已审核';
@@ -13,19 +15,18 @@ if(Request['type' == 1]){
 			stats[3]='已出库';
 			supplierName='客户';
 	}
-$(function(){
-	//绑定按钮
-	$("#searchBtn").bind('click',function(){
-		var data = getFormData("searchForm");
-		if (data['state'] == '') {
-			delete data.state; //删除对象属性
-		}
-	$("#grid").datagrid('reload', data);
-	});
-});
-var g_index;   //主表格的行索引
-var g_index2;  //子表格的行索引
+
+
+
 	$(function() {
+		//绑定按钮
+		$("#searchBtn").bind('click',function(){
+			var data = getFormData("searchForm");
+			if (data['state'] == '') {
+				delete data.state; //删除对象属性
+			}
+		$("#grid").datagrid('reload', data);
+		});
 	
 	$("#grid").datagrid({
 		title: '订单列表', //设置表格的标题
@@ -108,7 +109,7 @@ var g_index2;  //子表格的行索引
 		onExpandRow: function(index,row){
 		
 			$('#ddv_'+index).datagrid({
-			    url: basePath + row.uuid,
+				url: basePath + '/ordersdetail/getData.do?ordersuuid=' + row.uuid,
 					columns: [[
 						{field: 'uuid', title: '编号', width: 100},
 						{field: 'goodsuuid', title: '商品编号', width: 100},
@@ -167,11 +168,10 @@ var g_index2;  //子表格的行索引
 			}
 		});
 	if(Request['type'] == 2){
-		$('#grid').datagrid('hideColumn','checktime');
-		$('#grid').datagrid('hideColumn','starttime');
-		$('#grid').datagrid('hideColumn','checker');
-		
-		$('#grid').datagrid('hideColumn','starter');
+		$('#grid').datagrid('hideColumn', 'checktime');
+		$('#grid').datagrid('hideColumn', 'starttime');
+		$('#grid').datagrid('hideColumn', 'checker');
+		$('#grid').datagrid('hideColumn', 'starter');
 	}
 
 	
@@ -229,16 +229,15 @@ function doInStore() {
 	//出库
 	function doOutStore(){
 		var data = getFormData('orderForm');
-		$.post(basePath+'orders/doOutStore.do',data,function(rt){
+		$.post(basePath + '/orders/doOutStore.do',data,function(rt){
 			
 			if(rt.success){
-				$("#ordersWindow").window('close');
+				$("#orderWindow").window('close');
 				$('#ddv_' + g_index).datagrid('deleteRow', g_index2);
-			if($("ddv_"+g_index).datagrid('getRows').length == 0)n{
+			if($("ddv_"+g_index).datagrid('getRows').length == 0){
 				$("#grid").datagrid('deleteRow', g_index);
 			}
 			}
 			$.messager.alert('提示', rt.message);
 		},'json');
 	}
-	

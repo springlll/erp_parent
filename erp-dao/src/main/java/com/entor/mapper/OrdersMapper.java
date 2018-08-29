@@ -27,6 +27,16 @@ public interface OrdersMapper extends Mapper<Orders>{
 	@SelectKey(statement="SELECT orders_seq.nextval as uuid from dual"
 		, keyProperty="uuid", before=true, resultType=Long.class)
 	void insertPrimaryKey(Orders orders);
+	
+	@Select("<script>"
+			+ "select t.name, sum(d.money) as money from goodstype t, goods g, orders o, orderdetail d "
+			+ "where g.goodstypeuuid = t.uuid and d.ordersuuid = o.uuid and d.goodsuuid = g.uuid "
+			+ "and o.type = '2' "
+			+ "<if test=\"startDate != null\">and o.createtime &gt;= #{startDate}</if> "
+			+ "<if test=\"endDate != null\">and o.createtime &lt;= #{endDate}</if> "
+			+ "group by t.name"
+			+ "</script>")
+
 
 	List<OrderReport> selectOrderReport(@Param("startDate") Date startDate, @Param("endDate") Date endDate);
 }

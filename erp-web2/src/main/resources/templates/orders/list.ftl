@@ -8,10 +8,9 @@
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
+<script type="text/javascript" src="${request.contextPath}/easyui/datagrid-detailview.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/date.js"></script>
-<script type="text/javascript" src="${request.contextPath}/easyui/datagrid-detailview.js"></script>
-<script type="text/javascript" src="${request.contextPath}/adminjs/index.js"></script>
 <script  type="text/javascript" src="${request.contextPath}/js/request.js"></script>
 
 <script  type="text/javascript" src="${request.contextPath}/js/order.js"></script>
