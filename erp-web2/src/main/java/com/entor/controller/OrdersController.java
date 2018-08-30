@@ -220,7 +220,7 @@ public void getOrdersChart(HttpServletResponse response,Date startDate,Date endD
 	plot.setLabelFont(new Font("宋体",Font.BOLD,15));
 	ChartUtilities.writeChartAsJPEG(response.getOutputStream(), chart, 350, 500);
 }
-@RequestMapping(path="/export1 .do")
+@RequestMapping(path="/export1.do")
 	
 	public void export(HttpServletResponse response,Date startDate,Date endDate) throws IOException{
 	response.setHeader("Content-Disposition", "attachement;filename="+URLEncoder.encode("销售统计表.xls","utf-8"));

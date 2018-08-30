@@ -26,17 +26,16 @@
 		$('#grid').datagrid('load',data);
 		});
 		
-			
+		
+		//绑定导出按钮的事件
+		$("#exportBtn").bind('click', function() {
+			var data = getFormData('searchForm');
+			window.open('${request.contextPath}/orders/export.do?startDate=' + data['startDate']
+				+ '&endDate=' + data['endDate']);
+		});			
 
 	});
-$(function(){
-	$("#exportBtn").bind('click',function(){
-	
-		var data = getFormData('searchform');
-		window.open('${request.contextPath}/orders/export.do?startDate='
-		+data['startDate'] + '&endDate=' + data['endDate']);
-	});
-	});
+
 </script>
 
 
