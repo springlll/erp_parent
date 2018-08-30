@@ -28,28 +28,18 @@
 			$('#chart').attr('src', '${request.contextPath}/orders/chart.do?startDate=' + data['startDate']
 				+ '&endDate = ' + data['endDate']);
 		
-<<<<<<< HEAD
 		
-		//绑定导出按钮的事件
-		$("#exportBtn").bind('click', function() {
-			var data = getFormData('searchForm');
-			window.open('${request.contextPath}/orders/export.do?startDate=' + data['startDate']
-				+ '&endDate=' + data['endDate']);
-		});			
-=======
+
 		});
 		$("#exportBtn").bind('click', function() {
 			var data = getFormData('searchForm');
 			window.open('${request.contextPath}/orders/exportExcel.do?startDate=' + data['startDate']
 				+ '&endDate=' + data['endDate']);
 		});
->>>>>>> branch 'master' of https://github.com/springlll/erp_parent.git
+
 
 	});
-<<<<<<< HEAD
 
-=======
->>>>>>> branch 'master' of https://github.com/springlll/erp_parent.git
 </script>
 
 

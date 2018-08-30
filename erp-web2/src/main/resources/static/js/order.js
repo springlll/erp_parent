@@ -241,3 +241,7 @@ function doInStore() {
 			$.messager.alert('提示', rt.message);
 		},'json');
 	}
+
+	
+	
+	

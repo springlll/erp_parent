@@ -11,6 +11,7 @@
     <script type="text/javascript" src="adminjs/jquery.easyui.1.2.6.min.js"></script>
 	<script type="text/javascript" src='adminjs/index.js'> </script>
 	<script>
+	
 		$(function() {
 			$.post('sys/getName.do', function(rt) {
 				if (rt.success) {
@@ -21,6 +22,31 @@
 					alert(rt.message);
 					location='/login.html';
 				}
+			});
+			function openStoreAlertWindow(){
+				$("#storeAlertWindow").window('open');
+				$(".messager-body").window('close');
+			}
+			$.post('storealert/cjeck.do',function(rt){
+				
+				if(rt.suceess){
+					$.messager.show({
+						title:系统消息提示',
+						msg:rt.messager,
+						timeout:500
+					});
+				}
+			});
+			$('storeAlertWindow').window({
+				title: '仓管预警,
+				href:'storealert/list.do',
+				width:500,
+				height:200,
+				modal:true.
+				shadow:true,
+				closed:true,
+				resizable:true,
+				
 			});
 		});
 	</script>
@@ -101,6 +127,8 @@
 		<div id="exit">退出</div>
 	</div>
 
+	<!-- 提醒框 -->
+	<div id="storeAlertWindow"></div>
 
 </body>
 </html>

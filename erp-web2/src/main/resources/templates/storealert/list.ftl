@@ -21,6 +21,16 @@ $(function() {
 	       {field:'outnum', title:'待发货数量', width:100} 
 		]],
 		singleSelect: true
+		toolbar: [{
+			iconCls:'icon-add',
+			text:'发送报警邮件',
+			handler:function (){
+				$.post('${request.cntextPath}/storealert/send.do',function(rt)
+				{
+					$.messager.alert('提示', rt.messger);
+				},'json');
+			}
+		}],
 	});
 	
 });
