@@ -1,4 +1,4 @@
-package com.entor.javamail;
+/*package com.entor.javamail;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
@@ -27,3 +27,4 @@ public class Sender {
 	}
 
 }
+*/

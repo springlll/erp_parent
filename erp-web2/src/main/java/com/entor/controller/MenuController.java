@@ -11,10 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.entor.business.IMenuService;
 import com.entor.entity.Menu;
+import com.entor.entity.Tree;
 
 @Controller
 @RequestMapping("/menu")
-public class MenuController extends SysController{
+public class MenuController extends BaseController{
 	@Autowired
 	private IMenuService menuService;
 	@RequestMapping(path="/getData.do")
@@ -23,10 +24,25 @@ public class MenuController extends SysController{
 		
 		Menu menu = new Menu();
 		menu.setPid("0");
-		List<Menu> menus = menuService.findMenus(menu);
+		List<Menu> menus1 = menuService.find(menu);
+		for(Menu menu1 : menus1) {
+			menu = new Menu();
+			menu.setPid(menu1.getMenuid());
+			List<Menu> menu2 = menuService.find(menu);
+			menu1.setMenus(menu2);
+		}
 		Map map = new HashMap<>();
-		/*System.out.println(menus);*/
-		map.put("menus", menus);
+		System.out.println(menu);
+		map.put("menus", menus1);
 		return map;
+	}
+	
+@RequestMapping("/tree.do")
+	public void tree(){}
+
+	@RequestMapping(path="/getRoleMenus.do",produces="application/json;charset=utf-8")
+	@ResponseBody
+	public List<Tree> getRoleMenus(Long roleuuid){
+		return menuService.getMenuTree(roleuuid);
 	}
 }

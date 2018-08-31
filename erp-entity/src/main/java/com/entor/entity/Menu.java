@@ -17,5 +17,16 @@ public class Menu {
 	private String pid;
 	@Transient
 	private List<Menu> menus;
-	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj) {
+			return true ;
+			
+		}
+		if(obj instanceof Menu) {
+			Menu menu = (Menu) obj;
+			return this.menuid.equals(menu.getMenuid());
+		}
+		return false ;
+	}
 }

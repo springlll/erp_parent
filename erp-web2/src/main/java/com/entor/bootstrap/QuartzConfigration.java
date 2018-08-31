@@ -25,7 +25,7 @@ public class QuartzConfigration {
     		@Qualifier("storeAlertJobBean") MethodInvokingJobDetailFactoryBean storeAlertJobBean) {
         CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
         tigger.setJobDetail(storeAlertJobBean.getObject());
-        tigger.setCronExpression("0/30 * * * * ?"); //Cron表达式
+        tigger.setCronExpression("0/30 1 1 * * ?"); //Cron表达式
         return tigger;
     }
     @Bean(name = "schedulerFactory")

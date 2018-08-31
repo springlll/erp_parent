@@ -23,32 +23,33 @@
 					location='/login.html';
 				}
 			});
-			function openStoreAlertWindow(){
-				$("#storeAlertWindow").window('open');
-				$(".messager-body").window('close');
-			}
-			$.post('storealert/cjeck.do',function(rt){
-				
-				if(rt.suceess){
+
+			$.post('storealert/check.do', function(rt) {
+				if (rt.status) {
+					//显示提醒
 					$.messager.show({
-						title:系统消息提示',
-						msg:rt.messager,
-						timeout:500
+						title: '系统消息提示',
+						msg: rt.message,
+						timeout: 5000
 					});
 				}
 			});
 			$('storeAlertWindow').window({
-				title: '仓管预警,
+				title: '仓管预警',
 				href:'storealert/list.do',
 				width:500,
 				height:200,
-				modal:true.
+				modal:true,
 				shadow:true,
 				closed:true,
 				resizable:true,
 				
 			});
 		});
+		function openStoreAlertWindow(){
+			$("#storeAlertWindow").window('open');
+			$(".messager-body").window('close');
+		}
 	</script>
 </head>
 <body class="easyui-layout" style="overflow-y: hidden"  fit="true"   scroll="no">

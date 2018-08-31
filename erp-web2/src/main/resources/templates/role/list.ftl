@@ -9,30 +9,19 @@
 <script type="text/javascript" src="${request.contextPath}/easyui/jquery.easyui.min.js"></script>
 <script type="text/javascript" src="${request.contextPath}/easyui/locale/easyui-lang-zh_CN.js"></script>
 <script type="text/javascript" src="${request.contextPath}/js/form.js"></script>
-<script>
-$(function() {
+<script type="text/javascript">
 	
-	$("#grid").datagrid({
-		url: '${request.contextPath}/storealert/getData.do', 
-		columns: [[
-	       {field:'uuid', title:'商品编号', width:100}, 
-	       {field:'name', title:'商品名称', width:100}, 
-	       {field:'storenum', title:'库存数量', width:100}, 
-	       {field:'outnum', title:'待发货数量', width:100} 
-		]],
-		singleSelect: true,
-		toolbar: [{
-			iconCls:'icon-add',
-			text:'发送报警邮件',
-			handler:function (){
-				$.post('${request.contextPath}/storealert/send.do',function(rt)
-				{
-					$.messager.alert('提示', rt.messger);
-				},'json');
-			}
-		}],
-	});
-});
+		$(function(){
+			$("#grid").datagrid({
+				url: '${request.contextPath}/role/getData.do',
+				columns: [[
+					{filed:'uuid', title:'角色编号', width:100},
+					{filed:'name',title:'角色名称',width:100},
+					
+				]],
+				singleSelect : true
+			});
+		})	;
 </script>
 </head>
 <body>
