@@ -16,6 +16,8 @@ import com.entor.entity.Tree;
 @Controller
 @RequestMapping("/menu")
 public class MenuController extends BaseController{
+	
+	//获取角色
 	@Autowired
 	private IMenuService menuService;
 	@RequestMapping(path="/getData.do")
@@ -37,6 +39,7 @@ public class MenuController extends BaseController{
 		return map;
 	}
 	
+	//获取菜单权限
 @RequestMapping("/tree.do")
 	public void tree(){}
 

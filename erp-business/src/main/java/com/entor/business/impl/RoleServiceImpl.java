@@ -19,5 +19,10 @@ public class RoleServiceImpl  extends BaseServiceImpl<Role> implements IRoleServ
 
 		return this.mapper;
 	}
+	@Override
+	public void addRoleMenus(long roleId, String[] ids) {
+		// TODO Auto-generated method stub
+		
+	}
 
 }

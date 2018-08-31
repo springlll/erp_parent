@@ -14,7 +14,7 @@
 <script>
 	$(function(){
 		$("#tree").tree({
-			url: '${request.contextPath}/menu/getRoleMenus.do?roleuuid' +Request['roleuuid'],
+			url: '${request.contextPath}/menu/getDate.do?roleuuid' +Request['roleuuid'],
 			checkbox:true,
 			animate:true
 		});

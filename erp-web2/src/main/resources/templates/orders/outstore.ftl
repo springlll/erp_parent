@@ -39,7 +39,8 @@
 				<tr>
 					<td>选择仓库：</td><td>
 						<input class="easyui-combobox" name="storeuuid"
-					data-options="url:'${request.contextPath}/store/getComboData.do', valueField:'uuid', textField:'name'">
+					data-options="url:'${request.contextPath}/store/getComboData.do', valueField:'uuid',
+					 textField:'name'">
 					</td> 
 				</tr>
 				<tr>
