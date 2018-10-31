@@ -2,7 +2,6 @@ package com.entor.test;
 
 import javax.mail.MessagingException;
 
-import org.junit.Test;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;

@@ -109,7 +109,12 @@
 		</dependency>
 	
 		<!-- 读取机器码 -->
-
+		<!-- Javamail -->
+		<dependency>
+			<groupId>javax.mail</groupId>
+			<artifactId>mail</artifactId>
+			<version>1.4.4</version>
+		</dependency>
 
 
 		

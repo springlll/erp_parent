@@ -3,6 +3,7 @@ package com.entor.controller;
 import java.util.List;
 import java.util.Map;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.entor.business.IStoreAlertService;
 import com.entor.entity.StoreAlert;
 import com.entor.util.JavamailUtil;
+
 
 @Controller
 @RequestMapping("/storealert")
@@ -44,7 +46,7 @@ public class StoreAlertController extends BaseController {
 		List list = storeAlertService.findAll();
 		if (list.size() > 0) {
 			content = content.replace("[count]", list.size() + "");
-			String[] receivers = {"294870793@qq.com"};
+			String[] receivers = {"896337156@qq.com"};
 			try {
 				JavamailUtil.sendMail(javamailSender, from, receivers, subject, content);
 				System.out.println("发送成功！");

@@ -31,7 +31,7 @@ $(function() {
 			textField: 'name',
 			panelWidth: 700, //设置下拉表格的宽度
 			columns: [[
-			   {field: 'uuid', title: 'ID', width: 100},
+ 			   {field: 'uuid', title: 'ID', width: 100},
 			   {field: 'name', title: '名称', width: 100},
 			   {field: 'address', title: '地址', width: 100},
 			   {field: 'contact', title: '联系人', width: 100},

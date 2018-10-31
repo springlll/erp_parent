@@ -11,8 +11,10 @@ import org.springframework.scheduling.quartz.SchedulerFactoryBean;
 import com.entor.quartz.StoreAlertJob;
 
 
+
 @Configuration
-public class QuartzConfigration {
+public class QuartzConfiguration {
+
     @Bean(name = "storeAlertJobBean")
     public MethodInvokingJobDetailFactoryBean storeAlertJobBean(StoreAlertJob storeAlertJob) {
         MethodInvokingJobDetailFactoryBean jobDetail = new MethodInvokingJobDetailFactoryBean();
@@ -20,14 +22,16 @@ public class QuartzConfigration {
         jobDetail.setTargetMethod("sendStoreAlertMsg"); // 被执行的方法
         return jobDetail;
     }
+    
     @Bean(name = "storeAlertJobTrigger")
     public CronTriggerFactoryBean storeAlertJobTrigger(
     		@Qualifier("storeAlertJobBean") MethodInvokingJobDetailFactoryBean storeAlertJobBean) {
         CronTriggerFactoryBean tigger = new CronTriggerFactoryBean();
         tigger.setJobDetail(storeAlertJobBean.getObject());
-        tigger.setCronExpression("0/30 1 1 * * ?"); //Cron表达式
+        tigger.setCronExpression("0/30 * * * * ?"); //Cron表达式
         return tigger;
     }
+
     @Bean(name = "schedulerFactory")
     public SchedulerFactoryBean schedulerFactory(
     		@Qualifier("storeAlertJobTrigger") Trigger storeAlertJobTrigger) {
@@ -39,6 +43,6 @@ public class QuartzConfigration {
         //注册触发器
         bean.setTriggers(storeAlertJobTrigger);
         return bean;
-}
-
+    }
+	
 }
